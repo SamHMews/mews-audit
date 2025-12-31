@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mews Audit</title>
 
-  <!-- Fonts (free alternatives) -->
-  <!-- Axiforma Book isn't freely hosted; Manrope is a close free alternative for headings/CTAs -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,289 +15,191 @@
       --text:#1C1D24;
       --bg:#FFFFFF;
       --cta:#F7BCF1;
-
       --border:#D7D9E3;
       --border-strong:#B7BBCB;
-      --surface:#FFFFFF;
-
       --radius:12px;
       --radius-sm:10px;
-
       --shadow: 0 12px 32px rgba(28,29,36,.10);
       --shadow-sm: 0 6px 18px rgba(28,29,36,.08);
-
       --focus: 0 0 0 4px rgba(247,188,241,.55);
       --grid: 8px;
       --max: 920px;
     }
 
     *{ box-sizing:border-box; }
-    html, body { height:100%; }
     body{
       margin:0;
       background:var(--bg);
       color:var(--text);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    /* Layout */
-    .page{
-      min-height:100%;
-      display:flex;
-      flex-direction:column;
     }
 
     .container{
-      width:100%;
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: calc(var(--grid) * 6) calc(var(--grid) * 3);
+      max-width:var(--max);
+      margin:0 auto;
+      padding:48px 24px;
     }
 
+    /* HEADER */
     header{
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap: calc(var(--grid) * 2);
-      margin-bottom: calc(var(--grid) * 4);
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap: calc(var(--grid) * 2);
-      min-width:0;
+      justify-content:flex-start;
+      margin-bottom:64px; /* ⬅ increased white space below logo */
     }
 
     .logo{
-      width: 180px;
-      max-width: 40vw;
-      height: auto;
+      width:220px;        /* ⬅ larger logo */
+      max-width:60vw;
+      height:auto;
       display:block;
-    }
-
-    .titleblock{
-      min-width:0;
     }
 
     h1{
-      font-family: Manrope, Inter, system-ui, sans-serif;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin:0;
-      font-size: clamp(24px, 3.2vw, 34px);
-      line-height: 1.1;
-      color: var(--text);
+      font-family:Manrope, Inter, sans-serif;
+      font-size:clamp(24px,3.2vw,34px);
+      font-weight:600;
+      margin:0 0 12px 0;
     }
 
     .subtitle{
-      margin: calc(var(--grid) * 1.25) 0 0 0;
-      font-size: 14px;
-      line-height: 1.55;
-      color: var(--text);
-      opacity: .78;
-      max-width: 70ch;
+      max-width:70ch;
+      font-size:14px;
+      opacity:.78;
+      line-height:1.55;
     }
 
-    /* Card */
     .card{
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: calc(var(--grid) * 4);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:32px;
+      background:#fff;
     }
-
-    .stack{ display:flex; flex-direction:column; gap: calc(var(--grid) * 3); }
 
     .row{
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: calc(var(--grid) * 2);
+      grid-template-columns:1fr 1fr;
+      gap:16px;
     }
 
-    @media (max-width: 720px){
-      header{ flex-direction:column; align-items:flex-start; }
-      .logo{ width: 160px; }
-      .container{ padding: calc(var(--grid) * 5) calc(var(--grid) * 2); }
-      .card{ padding: calc(var(--grid) * 3); }
-      .row{ grid-template-columns: 1fr; }
+    @media(max-width:720px){
+      .row{ grid-template-columns:1fr; }
+      .logo{ width:200px; }
     }
 
-    /* Form */
     label{
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:6px;
       display:block;
-      font-family: Inter, system-ui, sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      margin: 0 0 calc(var(--grid) * 1) 0;
-      color: var(--text);
-    }
-
-    .hint{
-      margin-top: calc(var(--grid) * .75);
-      font-size: 12.5px;
-      line-height: 1.4;
-      opacity: .72;
     }
 
     input{
       width:100%;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 12px 12px;
-      font-size: 14px;
-      line-height: 1.2;
-      color: var(--text);
-      background: #fff;
-      transition: border-color .15s ease, box-shadow .15s ease, transform .05s ease;
-      outline: none;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      font-size:14px;
     }
 
-    input::placeholder{ color: rgba(28,29,36,.45); }
-
     input:focus{
-      border-color: var(--border-strong);
-      box-shadow: var(--focus);
+      outline:none;
+      border-color:var(--border-strong);
+      box-shadow:var(--focus);
+    }
+
+    .hint{
+      font-size:12.5px;
+      opacity:.7;
+      margin-top:6px;
     }
 
     .actions{
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap: calc(var(--grid) * 2);
-      flex-wrap: wrap;
-      margin-top: calc(var(--grid) * 1);
+      align-items:center;
+      gap:16px;
+      margin-top:24px;
+      flex-wrap:wrap;
     }
 
     .btn{
-      font-family: Manrope, Inter, system-ui, sans-serif;
-      font-weight: 700;
-      border: 1px solid rgba(28,29,36,.18);
-      background: var(--cta);
-      color: var(--text);
-      padding: 12px 16px;
-      border-radius: 999px;
+      font-family:Manrope, Inter, sans-serif;
+      font-weight:700;
+      background:var(--cta);
+      color:var(--text);
+      border-radius:999px;
+      border:1px solid rgba(28,29,36,.2);
+      padding:12px 18px;
       cursor:pointer;
-      transition: transform .08s ease, box-shadow .15s ease, filter .15s ease;
-      box-shadow: var(--shadow-sm);
-      user-select:none;
-      display:inline-flex;
-      align-items:center;
-      gap: 10px;
+      box-shadow:var(--shadow-sm);
     }
 
-    .btn:hover{ filter: brightness(0.99); transform: translateY(-1px); }
-    .btn:active{ transform: translateY(0px); }
-    .btn:focus{ outline:none; box-shadow: var(--shadow-sm), var(--focus); }
-    .btn:disabled{ opacity:.55; cursor:not-allowed; transform:none; }
+    .btn:hover{ transform:translateY(-1px); }
 
     .pill{
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: #fff;
-      opacity: .86;
-      white-space: nowrap;
+      font-size:12px;
+      border:1px solid var(--border);
+      padding:6px 10px;
+      border-radius:999px;
+      opacity:.85;
     }
 
-    /* Messages */
     .msg{
       display:none;
-      border-radius: 12px;
-      padding: 12px 14px;
-      border: 1px solid var(--border);
-      background: #fff;
-      box-shadow: 0 6px 18px rgba(28,29,36,.06);
-      font-size: 13.5px;
-      line-height: 1.5;
+      margin-bottom:24px;
+      padding:12px 14px;
+      border-radius:12px;
+      font-size:13.5px;
     }
 
     .msg.ok{
-      border-color: rgba(16, 185, 129, .35);
-      background: rgba(16, 185, 129, .08);
+      background:rgba(16,185,129,.08);
+      border:1px solid rgba(16,185,129,.35);
     }
+
     .msg.err{
-      border-color: rgba(239, 68, 68, .35);
-      background: rgba(239, 68, 68, .08);
-    }
-
-    /* Footer note */
-    .foot{
-      margin-top: calc(var(--grid) * 4);
-      font-size: 12.5px;
-      line-height: 1.5;
-      opacity: .72;
-    }
-
-    /* Small accessibility helper */
-    .sr-only{
-      position:absolute;
-      width:1px; height:1px;
-      padding:0; margin:-1px;
-      overflow:hidden; clip:rect(0,0,0,0);
-      white-space:nowrap; border:0;
+      background:rgba(239,68,68,.08);
+      border:1px solid rgba(239,68,68,.35);
     }
   </style>
 </head>
 
 <body>
-  <div class="page">
-    <div class="container">
-      <header>
-        <div class="brand">
-          <img class="logo" alt="Mews" src="https://www.mews.com/hubfs/_Project_Phoenix/images/logo/Mews%20Logo.svg" />
-        </div>
-        <div class="titleblock" aria-hidden="true"></div>
-      </header>
+  <div class="container">
+    <header>
+      <img class="logo" src="https://www.mews.com/hubfs/_Project_Phoenix/images/logo/Mews%20Logo.svg" alt="Mews">
+    </header>
 
-      <main class="stack" aria-label="Mews Audit">
+    <h1>Mews Configuration Audit</h1>
+    <p class="subtitle">
+      Generate a detailed, table-driven PDF audit report from your Mews configuration using the Connector API.
+    </p>
+
+    <div id="msgOk" class="msg ok"></div>
+    <div id="msgErr" class="msg err"></div>
+
+    <section class="card">
+      <div class="row">
         <div>
-          <h1>Mews Configuration Audit</h1>
-          <p class="subtitle">
-            Generate a detailed, table-driven PDF audit report from your Mews configuration using the Connector API.
-            Tokens are used only to generate the report and are cleared from the page after download.
-          </p>
+          <label for="clientToken">Client token</label>
+          <input id="clientToken" type="password" autocomplete="off">
+          <div class="hint">Connector API client token</div>
         </div>
+        <div>
+          <label for="accessToken">Access token</label>
+          <input id="accessToken" type="password" autocomplete="off">
+          <div class="hint">Connector API access token</div>
+        </div>
+      </div>
 
-        <div id="msgOk" class="msg ok" role="status" aria-live="polite"></div>
-        <div id="msgErr" class="msg err" role="alert" aria-live="assertive"></div>
-
-        <section class="card" aria-label="Audit tokens form">
-          <div class="row">
-            <div>
-              <label for="clientToken">Client token</label>
-              <input id="clientToken" type="password" autocomplete="off" placeholder="Paste your client token" />
-              <div class="hint">Connector API client token for the tenant you want to audit.</div>
-            </div>
-
-            <div>
-              <label for="accessToken">Access token</label>
-              <input id="accessToken" type="password" autocomplete="off" placeholder="Paste your access token" />
-              <div class="hint">Connector API access token with permission to read configuration data.</div>
-            </div>
-          </div>
-
-          <div class="actions">
-            <button id="btn" class="btn" type="button" aria-describedby="backendMeta">
-              <span aria-hidden="true">Generate PDF audit</span>
-              <span class="sr-only">Generate PDF audit</span>
-            </button>
-
-            <div id="backendMeta" class="pill">
-              Backend: <span id="backendUrl"></span>
-            </div>
-          </div>
-
-          <p class="foot">
-            If the backend is on Render free tier it may take 30–60 seconds to wake up. If you see an error, try again once.
-          </p>
-        </section>
-      </main>
-    </div>
+      <div class="actions">
+        <button id="btn" class="btn">Generate PDF audit</button>
+        <div class="pill">Backend: <span id="backendUrl"></span></div>
+      </div>
+    </section>
   </div>
 
 <script>
@@ -309,20 +210,12 @@
   const errBox = document.getElementById("msgErr");
   const btn = document.getElementById("btn");
 
-  function showOk(text){
-    okBox.textContent = text;
-    okBox.style.display = "block";
-    errBox.style.display = "none";
-  }
-  function showErr(text){
-    errBox.textContent = text;
-    errBox.style.display = "block";
-    okBox.style.display = "none";
-  }
+  function showOk(t){ okBox.textContent=t; okBox.style.display="block"; errBox.style.display="none"; }
+  function showErr(t){ errBox.textContent=t; errBox.style.display="block"; okBox.style.display="none"; }
 
   btn.addEventListener("click", async () => {
-    const clientToken = document.getElementById("clientToken").value.trim();
-    const accessToken = document.getElementById("accessToken").value.trim();
+    const clientToken = clientTokenEl.value.trim();
+    const accessToken = accessTokenEl.value.trim();
 
     if(!clientToken || !accessToken){
       showErr("Please enter both tokens.");
@@ -332,51 +225,38 @@
     btn.disabled = true;
     showOk("Generating audit…");
 
-    try {
-      // Send as form-data to match the Flask backend (/audit expects form fields).
+    try{
       const form = new FormData();
       form.append("client_token", clientToken);
       form.append("access_token", accessToken);
       form.append("base_url", "https://api.mews-demo.com/api/connector/v1");
       form.append("client", "mews-audit");
 
-      const res = await fetch(`${BACKEND}/audit`, {
-        method: "POST",
-        body: form,
-        // IMPORTANT: do not set credentials/cookies; we’re not using sessions.
-      });
+      const res = await fetch(`${BACKEND}/audit`, { method:"POST", body:form });
 
       if(!res.ok){
-        const text = await res.text().catch(()=> "");
-        showErr(`Audit failed (HTTP ${res.status}). ${text ? "Try again or check backend logs." : ""}`);
-        btn.disabled = false;
+        showErr(`Audit failed (HTTP ${res.status})`);
+        btn.disabled=false;
         return;
       }
 
       const blob = await res.blob();
-      const cd = res.headers.get("content-disposition") || "";
-      const match = cd.match(/filename="?([^"]+)"?/i);
-      const filename = match ? match[1] : "mews-audit.pdf";
-
-      const url = window.URL.createObjectURL(blob);
+      const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-
+      a.href=url; a.download="mews-audit.pdf"; a.click();
+      URL.revokeObjectURL(url);
       showOk("Done. Your PDF download should have started.");
-    } catch (e) {
-      showErr("Could not reach the backend. Check the backend URL and CORS settings.");
-    } finally {
-      btn.disabled = false;
-      // Clear tokens from the page (best effort)
-      document.getElementById("clientToken").value = "";
-      document.getElementById("accessToken").value = "";
+    }catch{
+      showErr("Could not reach the backend.");
+    }finally{
+      btn.disabled=false;
+      clientTokenEl.value="";
+      accessTokenEl.value="";
     }
   });
+
+  const clientTokenEl = document.getElementById("clientToken");
+  const accessTokenEl = document.getElementById("accessToken");
 </script>
 </body>
 </html>
