@@ -11,8 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
+  <style>:root{
       --text:#1C1D24;
       --bg:#FFFFFF;
       --cta:#F7BCF1;
@@ -152,6 +151,7 @@
       margin:0;
     }
 
+    /* Pink Toggle (exact implementation provided) */
     .actions{
       display:flex;
       justify-content:flex-start;
@@ -175,27 +175,37 @@
 
     .btn:hover{ transform:translateY(-1px); }
     .btn:disabled{ opacity:.65; cursor:not-allowed; transform:none; }
-  /* Fancy pink switch (scoped) */
-.switch {
+
+/* Skillet switch (pink ON) — scoped to our UI, no body/layout overrides */
+.toggleRow .switch {
+  --hue1: 223; /* primary */
+  --hue3: 38;  /* yolk */
+  --hue4: 63;  /* egg liquid */
+  --primary: rgba(247,188,241,0.9);
+  --trans-dur: 0.4s;
+  --trans-timing1: cubic-bezier(0.65, 0.05, 0.36, 1);
+  --trans-timing2: cubic-bezier(0.65, -0.05, 0.36, 1.1);
+  --on-pink: var(--cta);
+
   animation: switchOff var(--trans-dur) var(--trans-timing1) forwards;
   border-radius: 1.5em;
   box-shadow: 0 0 0 0.125em hsla(var(--hue1),90%,50%,0);
   position: relative;
   transform-origin: 0 50%;
   transition: box-shadow 0.15s linear;
+  margin: 0; /* important: don't push layout */
   flex: 0 0 auto;
-  /* Make it fit our UI */
-  font-size: 10px; /* keeps switch compact */
+  font-size: 10px; /* keeps the switch compact in our card */
 }
 
-.switch:before,
-.switch:after {
+.toggleRow .switch:before,
+.toggleRow .switch:after {
   content: "";
   display: block;
   position: absolute;
 }
 
-.switch:before {
+.toggleRow .switch:before {
   background-color: hsl(var(--hue1),10%,60%);
   box-shadow: 0.0625em 0 0.0625em hsla(0,0%,10%,0.8) inset;
   top: calc(50% - 0.125em);
@@ -205,7 +215,7 @@
   transition: background-color calc(var(--trans-dur) / 2) calc(var(--trans-dur) / 2) var(--trans-timing1);
 }
 
-.switch:after {
+.toggleRow .switch:after {
   background-image:
     radial-gradient(
       0.3em 0.3em at 25% 50%,
@@ -221,13 +231,13 @@
   height: 0.5em;
 }
 
-.switch__input,
-.switch__input:before,
-.switch__input:after {
+.toggleRow .switch__input,
+.toggleRow .switch__input:before,
+.toggleRow .switch__input:after {
   display: block;
 }
 
-.switch__input {
+.toggleRow .switch__input {
   animation: switchOffInput var(--trans-dur) var(--trans-timing1) forwards;
   background-color: hsl(var(--hue1),10%,30%);
   border-radius: 1.5em;
@@ -245,8 +255,8 @@
   cursor: pointer;
 }
 
-.switch__input:before,
-.switch__input:after {
+.toggleRow .switch__input:before,
+.toggleRow .switch__input:after {
   content: "";
   position: absolute;
   transition:
@@ -255,7 +265,7 @@
     transform var(--trans-dur) var(--trans-timing1);
 }
 
-.switch__input:before {
+.toggleRow .switch__input:before {
   background-color: hsla(var(--hue4),90%,50%,0.15);
   box-shadow: 0.0625em 0.0625em 0 hsla(var(--hue4),0%,100%,0.15) inset;
   border-radius: 50% 40%;
@@ -265,7 +275,7 @@
   height: 1.75em;
 }
 
-.switch__input:after {
+.toggleRow .switch__input:after {
   background-color: hsl(var(--hue3),90%,50%);
   background-image:
     radial-gradient(12.5% 12.5% at 20% 25%,hsl(0,0%,100%) 45%,hsla(0,0%,100%,0) 50%),
@@ -283,7 +293,7 @@
   transition-timing-function: var(--trans-timing1), var(--trans-timing1), var(--trans-timing2);
 }
 
-.switch__sr {
+.toggleRow .switch__sr {
   overflow: hidden;
   position: absolute;
   width: 1px;
@@ -291,35 +301,35 @@
 }
 
 /* prevent animations on load */
-.switch:has([data-pristine="true"]),
-.switch__input[data-pristine="true"] {
+.toggleRow .switch:has([data-pristine="true"]),
+.toggleRow .switch__input[data-pristine="true"] {
   animation: none;
 }
 
-.switch:has(:focus-visible) {
+.toggleRow .switch:has(:focus-visible) {
   box-shadow: 0 0 0 0.125em var(--primary);
 }
 
-.switch:has(:checked) {
+.toggleRow .switch:has(:checked) {
   animation-name: switchOn;
 }
 
-/* ON indicator uses CTA pink */
-.switch:has(:checked):before {
-  background-color: var(--cta);
+/* ✅ ON indicator colour */
+.toggleRow .switch:has(:checked):before {
+  background-color: var(--on-pink);
 }
 
-.switch__input:checked {
+.toggleRow .switch__input:checked {
   animation-name: switchOnInput;
 }
 
-.switch__input:checked:before {
+.toggleRow .switch__input:checked:before {
   background-color: hsl(var(--hue4),10%,95%);
   box-shadow: -0.0625em -0.0625em 0 hsl(var(--hue4),0%,100%) inset;
   transform: translateX(3em) rotate(180deg);
 }
 
-.switch__input:checked:after {
+.toggleRow .switch__input:checked:after {
   background-color: hsl(var(--hue3),90%,50%);
   box-shadow:
     -0.0625em -0.0625em 0 hsla(var(--hue3),10%,95%,0.6),
@@ -328,45 +338,22 @@
   transform: translateX(3em) rotate(45deg);
 }
 
-@keyframes switchOnInput {
-  from {
-    background-color: hsl(var(--hue1),10%,30%);
-    box-shadow:
-      0 0 0 0.125em hsl(var(--hue1),10%,40%) inset,
-      0 0 0.125em 0.375em hsl(var(--hue1),10%,25%) inset,
-      0 0 0 0.375em hsl(var(--hue1),10%,55%) inset;
-  }
-  50% {
-    background-color: hsl(var(--hue1),10%,30%);
-    box-shadow:
-      0.0625em 0 0 0.125em hsl(var(--hue1),10%,40%) inset,
-      -0.0625em 0 0.125em 0.375em hsl(var(--hue1),10%,25%) inset,
-      -0.0625em 0 0 0.375em hsl(var(--hue1),10%,55%) inset;
-  }
-  to {
-    background-color: var(--cta);
-    box-shadow:
-      0 0 0 0.125em rgba(247,188,241,0.65) inset,
-      0 0 0.125em 0.375em rgba(247,188,241,0.35) inset,
-      0 0 0 0.375em rgba(247,188,241,0.85) inset;
-  }
-}
-
 @keyframes switchOff {
   from, to { transform: rotateY(0); }
   50% { transform: rotateY(-15deg); }
 }
 
+/* off animation: return from pink cleanly */
 @keyframes switchOffInput {
   from {
-    background-color: var(--cta);
+    background-color: var(--on-pink);
     box-shadow:
       0 0 0 0.125em rgba(247,188,241,0.65) inset,
       0 0 0.125em 0.375em rgba(247,188,241,0.35) inset,
       0 0 0 0.375em rgba(247,188,241,0.85) inset;
   }
   50% {
-    background-color: var(--cta);
+    background-color: var(--on-pink);
     box-shadow:
       -0.0625em 0 0 0.125em rgba(247,188,241,0.65) inset,
       0.0625em 0 0.125em 0.375em rgba(247,188,241,0.35) inset,
@@ -385,7 +372,16 @@
   from, to { transform: rotateY(0); }
   50% { transform: rotateY(15deg); }
 }
-  </style>
+
+@keyframes switchOnInput {
+  from {
+    background-color: hsl(var(--hue1),10%,30%);
+    box-shadow:
+      0 0 0 0.125em hsl(var(--hue1),10%,40%) inset,
+      0 0 0.125em 0.375em hsl(var(--hue1),10%,25%) inset,
+      0 0 0 0.375em hsl(var(--hue1),10%,55%) inset;
+  }
+</style>
 </head>
 
 <body>
@@ -422,13 +418,15 @@
 
       <div class="toggleRow">
   <span class="toggleText">Include inactive rates &amp; rate groups</span>
-  <label class="switch" aria-label="Include inactive rates &amp; rate groups">
+  <label class="switch">
     <input id="includeInactive" class="switch__input" type="checkbox" role="switch" data-pristine="true" checked />
     <span class="switch__sr">Include inactive</span>
   </label>
 </div>
 
 </div>
+        </div>
+      </div>
 
       <div class="actions">
         <button id="btn" class="btn">Generate PDF audit</button>
@@ -439,7 +437,17 @@
   <script>
     const BACKEND = "https://mews-audit-backend.onrender.com";
 
-    const okBox = document.getElementById("msgOk");
+    // Remove pristine on first interaction so animations don't run on initial paint
+window.addEventListener("DOMContentLoaded", () => {
+  const sw = document.getElementById("includeInactive");
+  if (sw) {
+    sw.addEventListener("change", function () {
+      this.removeAttribute("data-pristine");
+    }, { once: true });
+  }
+});
+
+const okBox = document.getElementById("msgOk");
     const errBox = document.getElementById("msgErr");
     const btn = document.getElementById("btn");
 
@@ -463,17 +471,7 @@
     const checkbox = document.querySelector('.toggle-checkbox');
     checkbox.addEventListener('click', e => e.target.classList.add('toggled-once'), { once: true });
 
-    // Prevent animations from firing on load; remove pristine on first change
-(() => {
-  const sw = document.getElementById("includeInactive");
-  if (!sw) return;
-  sw.addEventListener("change", function() {
-    this.removeAttribute("data-pristine");
-  }, { once: true });
-})();
-
-btn.addEventListener("click", async () => {
-
+    btn.addEventListener("click", async () => {
       const environment = envEl.value;
       const accessToken = accessTokenEl.value.trim();
       const includeInactive = includeInactiveEl.checked;
