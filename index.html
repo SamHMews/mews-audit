@@ -152,56 +152,6 @@
       margin:0;
     }
 
-    /* Pink Toggle (exact implementation provided) */
-    .toggle-container {
-      position: relative;
-      width: 52px;
-      height: 30px;
-      border-radius: 50px;
-      flex: 0 0 auto;
-    }
-
-    .toggle-checkbox {
-      appearance: none;
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      opacity: 0;
-      cursor: pointer;
-      margin:0;
-    }
-
-    .toggle-track {
-      display: flex;
-      align-items: center;
-      padding: 4px;
-      width: 100%;
-      height: 100%;
-      border-radius: inherit;
-      background-color: #aeaeae;
-      box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.2);
-      transition: background-color 0.3s ease;
-    }
-
-    .toggle-container > .toggle-checkbox:checked + .toggle-track {
-      background-color: #F7BCF1;
-    }
-
-    .toggle-thumb {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow:
-        0 4px 4px rgb(0 0 0 / 0.2),
-        inset 0 -2px 4px rgb(0 0 0 / 0.2);
-      transition: transform 0.25s ease;
-    }
-
-    .toggle-checkbox:checked + .toggle-track > .toggle-thumb {
-      transform: translateX(22px);
-    }
-
     .actions{
       display:flex;
       justify-content:flex-start;
@@ -225,6 +175,216 @@
 
     .btn:hover{ transform:translateY(-1px); }
     .btn:disabled{ opacity:.65; cursor:not-allowed; transform:none; }
+  /* Fancy pink switch (scoped) */
+.switch {
+  animation: switchOff var(--trans-dur) var(--trans-timing1) forwards;
+  border-radius: 1.5em;
+  box-shadow: 0 0 0 0.125em hsla(var(--hue1),90%,50%,0);
+  position: relative;
+  transform-origin: 0 50%;
+  transition: box-shadow 0.15s linear;
+  flex: 0 0 auto;
+  /* Make it fit our UI */
+  font-size: 10px; /* keeps switch compact */
+}
+
+.switch:before,
+.switch:after {
+  content: "";
+  display: block;
+  position: absolute;
+}
+
+.switch:before {
+  background-color: hsl(var(--hue1),10%,60%);
+  box-shadow: 0.0625em 0 0.0625em hsla(0,0%,10%,0.8) inset;
+  top: calc(50% - 0.125em);
+  right: 100%;
+  width: 0.5em;
+  height: 0.25em;
+  transition: background-color calc(var(--trans-dur) / 2) calc(var(--trans-dur) / 2) var(--trans-timing1);
+}
+
+.switch:after {
+  background-image:
+    radial-gradient(
+      0.3em 0.3em at 25% 50%,
+      hsla(var(--hue1),10%,20%,0) 30%,
+      hsl(var(--hue1),10%,20%) 35% 45%,
+      hsl(var(--hue1),10%,30%) 50%
+    );
+  border-radius: 0.25em 0.125em 0.125em 0.25em;
+  box-shadow: 0 0 0.125em hsl(var(--hue1),10%,10%) inset;
+  top: calc(50% - 0.25em);
+  right: calc(100% + 0.5em);
+  width: 1.5em;
+  height: 0.5em;
+}
+
+.switch__input,
+.switch__input:before,
+.switch__input:after {
+  display: block;
+}
+
+.switch__input {
+  animation: switchOffInput var(--trans-dur) var(--trans-timing1) forwards;
+  background-color: hsl(var(--hue1),10%,30%);
+  border-radius: 1.5em;
+  box-shadow:
+    0 0 0 0.125em hsl(var(--hue1),10%,40%) inset,
+    0 0 0.125em 0.375em hsl(var(--hue1),10%,25%) inset,
+    0 0 0 0.375em hsl(var(--hue1),10%,55%) inset;
+  outline: transparent;
+  position: relative;
+  width: 6em;
+  height: 3em;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+.switch__input:before,
+.switch__input:after {
+  content: "";
+  position: absolute;
+  transition:
+    background-color var(--trans-dur) var(--trans-timing1),
+    box-shadow var(--trans-dur) var(--trans-timing1),
+    transform var(--trans-dur) var(--trans-timing1);
+}
+
+.switch__input:before {
+  background-color: hsla(var(--hue4),90%,50%,0.15);
+  box-shadow: 0.0625em 0.0625em 0 hsla(var(--hue4),0%,100%,0.15) inset;
+  border-radius: 50% 40%;
+  top: 0.625em;
+  left: 0.5em;
+  width: 2em;
+  height: 1.75em;
+}
+
+.switch__input:after {
+  background-color: hsl(var(--hue3),90%,50%);
+  background-image:
+    radial-gradient(12.5% 12.5% at 20% 25%,hsl(0,0%,100%) 45%,hsla(0,0%,100%,0) 50%),
+    radial-gradient(15% 30% at 15% 50%,hsl(0,0%,100%) 45%,hsla(0,0%,100%,0) 50%);
+  border-radius: 50%;
+  box-shadow:
+    -0.0625em 0 0 hsla(var(--hue3),10%,95%,0.9),
+    -0.125em 0 0 hsl(var(--hue3),90%,45%) inset,
+    0.125em 0 0.125em hsla(0,0%,10%,0.3);
+  top: 1em;
+  left: 1em;
+  width: 1em;
+  height: 1em;
+  transform: rotate(45deg);
+  transition-timing-function: var(--trans-timing1), var(--trans-timing1), var(--trans-timing2);
+}
+
+.switch__sr {
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+}
+
+/* prevent animations on load */
+.switch:has([data-pristine="true"]),
+.switch__input[data-pristine="true"] {
+  animation: none;
+}
+
+.switch:has(:focus-visible) {
+  box-shadow: 0 0 0 0.125em var(--primary);
+}
+
+.switch:has(:checked) {
+  animation-name: switchOn;
+}
+
+/* ON indicator uses CTA pink */
+.switch:has(:checked):before {
+  background-color: var(--cta);
+}
+
+.switch__input:checked {
+  animation-name: switchOnInput;
+}
+
+.switch__input:checked:before {
+  background-color: hsl(var(--hue4),10%,95%);
+  box-shadow: -0.0625em -0.0625em 0 hsl(var(--hue4),0%,100%) inset;
+  transform: translateX(3em) rotate(180deg);
+}
+
+.switch__input:checked:after {
+  background-color: hsl(var(--hue3),90%,50%);
+  box-shadow:
+    -0.0625em -0.0625em 0 hsla(var(--hue3),10%,95%,0.6),
+    -0.125em 0 0 hsl(var(--hue3),90%,45%) inset,
+    0.0625em 0.0625em 0.125em hsla(0,0%,10%,0);
+  transform: translateX(3em) rotate(45deg);
+}
+
+@keyframes switchOnInput {
+  from {
+    background-color: hsl(var(--hue1),10%,30%);
+    box-shadow:
+      0 0 0 0.125em hsl(var(--hue1),10%,40%) inset,
+      0 0 0.125em 0.375em hsl(var(--hue1),10%,25%) inset,
+      0 0 0 0.375em hsl(var(--hue1),10%,55%) inset;
+  }
+  50% {
+    background-color: hsl(var(--hue1),10%,30%);
+    box-shadow:
+      0.0625em 0 0 0.125em hsl(var(--hue1),10%,40%) inset,
+      -0.0625em 0 0.125em 0.375em hsl(var(--hue1),10%,25%) inset,
+      -0.0625em 0 0 0.375em hsl(var(--hue1),10%,55%) inset;
+  }
+  to {
+    background-color: var(--cta);
+    box-shadow:
+      0 0 0 0.125em rgba(247,188,241,0.65) inset,
+      0 0 0.125em 0.375em rgba(247,188,241,0.35) inset,
+      0 0 0 0.375em rgba(247,188,241,0.85) inset;
+  }
+}
+
+@keyframes switchOff {
+  from, to { transform: rotateY(0); }
+  50% { transform: rotateY(-15deg); }
+}
+
+@keyframes switchOffInput {
+  from {
+    background-color: var(--cta);
+    box-shadow:
+      0 0 0 0.125em rgba(247,188,241,0.65) inset,
+      0 0 0.125em 0.375em rgba(247,188,241,0.35) inset,
+      0 0 0 0.375em rgba(247,188,241,0.85) inset;
+  }
+  50% {
+    background-color: var(--cta);
+    box-shadow:
+      -0.0625em 0 0 0.125em rgba(247,188,241,0.65) inset,
+      0.0625em 0 0.125em 0.375em rgba(247,188,241,0.35) inset,
+      0.0625em 0 0 0.375em rgba(247,188,241,0.85) inset;
+  }
+  to {
+    background-color: hsl(var(--hue1),10%,30%);
+    box-shadow:
+      0 0 0 0.125em hsl(var(--hue1),10%,40%) inset,
+      0 0 0.125em 0.375em hsl(var(--hue1),10%,25%) inset,
+      0 0 0 0.375em hsl(var(--hue1),10%,55%) inset;
+  }
+}
+
+@keyframes switchOn {
+  from, to { transform: rotateY(0); }
+  50% { transform: rotateY(15deg); }
+}
   </style>
 </head>
 
@@ -261,14 +421,14 @@
       </div>
 
       <div class="toggleRow">
-        <span class="toggleText">Include inactive rates &amp; rate groups</span>
-        <div class="toggle-container">
-          <input id="includeInactive" class="toggle-checkbox" type="checkbox" checked>
-          <div class="toggle-track">
-            <div class="toggle-thumb"></div>
-          </div>
-        </div>
-      </div>
+  <span class="toggleText">Include inactive rates &amp; rate groups</span>
+  <label class="switch" aria-label="Include inactive rates &amp; rate groups">
+    <input id="includeInactive" class="switch__input" type="checkbox" role="switch" data-pristine="true" checked />
+    <span class="switch__sr">Include inactive</span>
+  </label>
+</div>
+
+</div>
 
       <div class="actions">
         <button id="btn" class="btn">Generate PDF audit</button>
@@ -303,7 +463,17 @@
     const checkbox = document.querySelector('.toggle-checkbox');
     checkbox.addEventListener('click', e => e.target.classList.add('toggled-once'), { once: true });
 
-    btn.addEventListener("click", async () => {
+    // Prevent animations from firing on load; remove pristine on first change
+(() => {
+  const sw = document.getElementById("includeInactive");
+  if (!sw) return;
+  sw.addEventListener("change", function() {
+    this.removeAttribute("data-pristine");
+  }, { once: true });
+})();
+
+btn.addEventListener("click", async () => {
+
       const environment = envEl.value;
       const accessToken = accessTokenEl.value.trim();
       const includeInactive = includeInactiveEl.checked;
