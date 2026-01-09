@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mews Audit</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7' stroke='%231C1D24' stroke-width='2' fill='none'/%3E%3Cline x1='16.65' y1='16.65' x2='21' y2='21' stroke='%231C1D24' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7' stroke='%231C1D24' stroke-width='2' fill='none'/%3E%3Cline x1='16.65' y1='16.65' x2='21' y2='21' stroke='%231C1D24' stroke-width='2'/%3E%3C/svg%3E">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,11 +19,9 @@
       --border:#D7D9E3;
       --border-strong:#B7BBCB;
       --radius:12px;
-      --radius-sm:10px;
       --shadow: 0 12px 32px rgba(28,29,36,.10);
       --shadow-sm: 0 6px 18px rgba(28,29,36,.08);
       --focus: 0 0 0 4px rgba(247,188,241,.55);
-      --grid: 8px;
       --max: 920px;
     }
 
@@ -42,16 +40,15 @@
       padding:48px 24px;
     }
 
-    /* HEADER */
     header{
       display:flex;
       align-items:center;
-      justify-content:flex-start;
-      margin-bottom:64px; /* ⬅ increased white space below logo */
+      justify-content:center;
+      margin-bottom:36px;
     }
 
     .logo{
-      width:220px;        /* ⬅ larger logo */
+      width:220px;
       max-width:60vw;
       height:auto;
       display:block;
@@ -62,6 +59,7 @@
       font-size:clamp(24px,3.2vw,34px);
       font-weight:600;
       margin:0 0 12px 0;
+      text-align:center;
     }
 
     .subtitle{
@@ -69,6 +67,8 @@
       font-size:14px;
       opacity:.78;
       line-height:1.55;
+      text-align:center;
+      margin:0 auto 22px auto;
     }
 
     .card{
@@ -77,6 +77,8 @@
       box-shadow:var(--shadow);
       padding:32px;
       background:#fff;
+      max-width:720px;
+      margin:0 auto;
     }
 
     .row{
@@ -103,6 +105,7 @@
       border-radius:10px;
       border:1px solid var(--border);
       font-size:14px;
+      background:#fff;
     }
 
     input:focus, select:focus{
@@ -117,9 +120,91 @@
       margin-top:6px;
     }
 
+    .msg{
+      display:none;
+      margin:0 auto 18px auto;
+      max-width:720px;
+      padding:12px 14px;
+      border-radius:12px;
+      font-size:13.5px;
+    }
+
+    .msg.ok{
+      background:rgba(16,185,129,.08);
+      border:1px solid rgba(16,185,129,.35);
+    }
+
+    .msg.err{
+      background:rgba(239,68,68,.08);
+      border:1px solid rgba(239,68,68,.35);
+    }
+
+    .toggleRow{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .toggleText{
+      font-size:13px;
+      font-weight:600;
+      margin:0;
+    }
+
+    /* Pink Toggle (exact implementation provided) */
+    .toggle-container {
+      position: relative;
+      width: 52px;
+      height: 30px;
+      border-radius: 50px;
+      flex: 0 0 auto;
+    }
+
+    .toggle-checkbox {
+      appearance: none;
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      opacity: 0;
+      cursor: pointer;
+      margin:0;
+    }
+
+    .toggle-track {
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background-color: #aeaeae;
+      box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .toggle-container > .toggle-checkbox:checked + .toggle-track {
+      background-color: #F7BCF1;
+    }
+
+    .toggle-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow:
+        0 4px 4px rgb(0 0 0 / 0.2),
+        inset 0 -2px 4px rgb(0 0 0 / 0.2);
+      transition: transform 0.25s ease;
+    }
+
+    .toggle-checkbox:checked + .toggle-track > .toggle-thumb {
+      transform: translateX(22px);
+    }
+
     .actions{
       display:flex;
-      justify-content:space-between;
+      justify-content:flex-start;
       align-items:center;
       gap:16px;
       margin-top:24px;
@@ -139,75 +224,129 @@
     }
 
     .btn:hover{ transform:translateY(-1px); }
+    .btn:disabled{ opacity:.65; cursor:not-allowed; transform:none; }
+  </style>
+</head>
 
-    .pill{
-      font-size:12px;
-      border:1px solid var(--border);
-      padding:6px 10px;
-      border-radius:999px;
-      opacity:.85;
+<body>
+  <div class="container">
+    <header>
+      <img class="logo" src="https://www.mews.com/hubfs/_Project_Phoenix/images/logo/Mews%20Logo.svg" alt="Mews">
+    </header>
+
+    <h1>Mews Configuration Audit</h1>
+    <p class="subtitle">
+      Generate a detailed, table-driven PDF audit report from your Mews configuration using the Connector API.
+    </p>
+
+    <div id="msgOk" class="msg ok"></div>
+    <div id="msgErr" class="msg err"></div>
+
+    <section class="card">
+      <div class="row">
+        <div>
+          <label for="environment">Environment</label>
+          <select id="environment">
+            <option value="product">Production</option>
+            <option value="demo" selected>Demo</option>
+          </select>
+          <div class="hint">Select where the audit should run</div>
+        </div>
+
+        <div>
+          <label for="accessToken">Access token</label>
+          <input id="accessToken" type="password" autocomplete="off">
+          <div class="hint">Connector API access token</div>
+        </div>
+      </div>
+
+      <div class="toggleRow">
+        <span class="toggleText">Include inactive rates &amp; rate groups</span>
+        <div class="toggle-container">
+          <input id="includeInactive" class="toggle-checkbox" type="checkbox" checked>
+          <div class="toggle-track">
+            <div class="toggle-thumb"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="btn" class="btn">Generate PDF audit</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const BACKEND = "https://mews-audit-backend.onrender.com";
+
+    const okBox = document.getElementById("msgOk");
+    const errBox = document.getElementById("msgErr");
+    const btn = document.getElementById("btn");
+
+    const envEl = document.getElementById("environment");
+    const accessTokenEl = document.getElementById("accessToken");
+    const includeInactiveEl = document.getElementById("includeInactive");
+
+    function showOk(t){
+      okBox.textContent = t;
+      okBox.style.display = "block";
+      errBox.style.display = "none";
     }
 
-    .msg{
-      display:none;
-      margin-bottom:24px;
-      padding:12px 14px;
-      border-radius:12px;
-      font-size:13.5px;
+    function showErr(t){
+      errBox.textContent = t;
+      errBox.style.display = "block";
+      okBox.style.display = "none";
     }
 
-    .msg.ok{
-      background:rgba(16,185,129,.08);
-      border:1px solid rgba(16,185,129,.35);
-    }
+    // Optional: hook for future animation logic (as requested)
+    const checkbox = document.querySelector('.toggle-checkbox');
+    checkbox.addEventListener('click', e => e.target.classList.add('toggled-once'), { once: true });
 
-    .msg.err{
-      background:rgba(239,68,68,.08);
-      border:1px solid rgba(239,68,68,.35);
-    }
-  function showErr(t){ errBox.textContent=t; errBox.style.display="block"; okBox.style.display="none"; }
+    btn.addEventListener("click", async () => {
+      const environment = envEl.value;
+      const accessToken = accessTokenEl.value.trim();
+      const includeInactive = includeInactiveEl.checked;
 
-  btn.addEventListener("click", async () => {
-    const environment = envEl.value;
-    const accessToken = accessTokenEl.value.trim();
-    const includeInactive = includeInactiveEl.checked;
-
-    if(!accessToken){
-      showErr("Please enter an access token.");
-      return;
-    }
-btn.disabled = true;
-    showOk("Generating audit…");
-
-    try{
-      const form = new FormData();
-      form.append("access_token", accessToken);
-      form.append("environment", environment);
-      form.append("include_inactive", includeInactive ? "true" : "false");
-      form.append("client", "mews-audit");
-const res = await fetch(`${BACKEND}/audit`, { method:"POST", body:form });
-
-      if(!res.ok){
-        showErr(`Audit failed (HTTP ${res.status})`);
-        btn.disabled=false;
+      if(!accessToken){
+        showErr("Please enter an access token.");
         return;
       }
 
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href=url; a.download="mews-audit.pdf"; a.click();
-      URL.revokeObjectURL(url);
-      showOk("Done. Your PDF download should have started.");
-    }catch{
-      showErr("Could not reach the backend.");
-    }finally{
-      btn.disabled=false;
-      accessTokenEl.value="";
-    }
-  });
+      btn.disabled = true;
+      showOk("Generating audit…");
 
-    const accessTokenEl = document.getElementById("accessToken");
-</script>
+      try{
+        const form = new FormData();
+        form.append("access_token", accessToken);
+        form.append("environment", environment);
+        form.append("include_inactive", includeInactive ? "true" : "false");
+        form.append("client", "mews-audit");
+
+        const res = await fetch(`${BACKEND}/audit`, { method:"POST", body:form });
+
+        if(!res.ok){
+          showErr(`Audit failed (HTTP ${res.status})`);
+          btn.disabled = false;
+          return;
+        }
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "mews-audit.pdf";
+        a.click();
+        URL.revokeObjectURL(url);
+
+        showOk("Done. Your PDF download should have started.");
+      }catch(e){
+        showErr("Could not reach the backend.");
+      }finally{
+        btn.disabled = false;
+        accessTokenEl.value = "";
+      }
+    });
+  </script>
 </body>
 </html>
