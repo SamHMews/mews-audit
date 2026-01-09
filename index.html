@@ -165,119 +165,33 @@
       background:rgba(239,68,68,.08);
       border:1px solid rgba(239,68,68,.35);
     }
-      select{
-      width:100%;
-      padding:12px;
-      border-radius:10px;
-      border:1px solid var(--border);
-      font-size:14px;
-      background:#fff;
-      color:var(--text);
-      appearance:none;
-    }
-
-    select:focus{
-      outline:none;
-      border-color:var(--border-strong);
-      box-shadow:var(--focus);
-    }
-
-    .toggleRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      margin-top:18px;
-      padding-top:6px;
-    }
-
-    .toggleLabel{
-      font-size:13px;
-      font-weight:600;
-    }
-
-    /* iPhone-style toggle */
-    .switch{
-      position:relative;
-      display:inline-block;
-      width:52px;
-      height:30px;
-      flex:0 0 auto;
-    }
-
-    .switch input{
-      opacity:0;
-      width:0;
-      height:0;
-    }
-
-    .slider{
-      position:absolute;
-      cursor:pointer;
-      top:0; left:0; right:0; bottom:0;
-      background:var(--border);
-      transition:.2s;
-      border-radius:999px;
-      border:1px solid rgba(28,29,36,.15);
-    }
-
-    .slider:before{
-      position:absolute;
-      content:"";
-      height:24px;
-      width:24px;
-      left:3px;
-      bottom:2px;
-      background:white;
-      transition:.2s;
-      border-radius:999px;
-      box-shadow:0 4px 10px rgba(28,29,36,.18);
-    }
-
-    .switch input:checked + .slider{
-      background:var(--cta);
-      border-color:rgba(28,29,36,.2);
-    }
-
-    .switch input:focus + .slider{
-      box-shadow:var(--focus);
-    }
-
-    .switch input:checked + .slider:before{
-      transform:translateX(22px);
-    }
-
-  
-/* Toggle row */
+  /* iOS-style toggle */
 .toggleRow{
   display:flex;
   align-items:center;
   gap:12px;
   margin-top:18px;
 }
-.toggleLabel{
-  margin:0;
+.toggleText{
   font-size:13px;
   font-weight:600;
-  display:inline;
 }
-.switchWrap{
+.iosSwitch{
   position:relative;
   width:44px;
   height:26px;
+  display:inline-block;
   flex:0 0 auto;
 }
-.switchWrap input{
-  opacity:0;
-  width:44px;
-  height:26px;
-  margin:0;
+.iosSwitch input{
   position:absolute;
   inset:0;
+  opacity:0;
   cursor:pointer;
-  z-index:2;
+  z-index:3;
+  margin:0;
 }
-.switch{
+.iosTrack{
   position:absolute;
   inset:0;
   border-radius:999px;
@@ -285,8 +199,7 @@
   border:1px solid rgba(28,29,36,.2);
   transition:background .18s ease, border-color .18s ease;
 }
-.switch::after{
-  content:"";
+.iosThumb{
   position:absolute;
   top:50%;
   left:3px;
@@ -297,12 +210,13 @@
   background:#fff;
   box-shadow:0 2px 8px rgba(28,29,36,.20);
   transition:left .18s ease;
+  z-index:2;
 }
-.switchWrap input:checked + .switch{
+.iosSwitch input:checked ~ .iosTrack{
   background:var(--cta);
   border-color:rgba(28,29,36,.18);
 }
-.switchWrap input:checked + .switch::after{
+.iosSwitch input:checked ~ .iosThumb{
   left:21px;
 }
   </style>
@@ -323,7 +237,7 @@
     <div id="msgErr" class="msg err"></div>
 
     <section class="card">
-            <div class="row">
+      <div class="row">
         <div>
           <label for="environment">Environment</label>
           <select id="environment">
@@ -331,24 +245,21 @@
             <option value="demo" selected>Demo</option>
           </select>
           <div class="hint">Select where the audit should run</div>
-        
-
-
-<div class="toggleRow">
-  <label class="toggleLabel" for="includeInactive">Include inactive rates &amp; rate groups</label>
-  <div class="switchWrap">
-    <input id="includeInactive" type="checkbox" checked>
-    <span class="switch" aria-hidden="true"></span>
-  </div>
-</div>
-
-</div>
+        </div>
         <div>
           <label for="accessToken">Access token</label>
           <input id="accessToken" type="password" autocomplete="off">
           <div class="hint">Connector API access token</div>
         </div>
       </div>
+
+<div class="toggleRow">
+  <span class="toggleText">Include inactive rates &amp; rate groups</span>
+  <label class="iosSwitch">
+    <input id="includeInactive" type="checkbox" checked>
+    <span class="iosTrack"></span>
+    <span class="iosThumb"></span>
+  </label>
 </div>
 
       <div class="actions">
@@ -366,6 +277,10 @@
   const errBox = document.getElementById("msgErr");
   const btn = document.getElementById("btn");
 
+  const envEl = document.getElementById("environment");
+  const accessTokenEl = document.getElementById("accessToken");
+  const includeInactiveEl = document.getElementById("includeInactive");
+
   function showOk(t){ okBox.textContent=t; okBox.style.display="block"; errBox.style.display="none"; }
   function showErr(t){ errBox.textContent=t; errBox.style.display="block"; okBox.style.display="none"; }
 
@@ -378,17 +293,16 @@
       showErr("Please enter an access token.");
       return;
     }
-
-    btn.disabled = true;
+btn.disabled = true;
     showOk("Generating audit…");
 
     try{
       const form = new FormData();
       form.append("access_token", accessToken);
       form.append("environment", environment);
-      form.append("include_inactive", String(includeInactive));
-
-      const res = await fetch(`${BACKEND}/audit`, { method:"POST", body:form });
+      form.append("include_inactive", includeInactive ? "true" : "false");
+      form.append("client", "mews-audit");
+const res = await fetch(`${BACKEND}/audit`, { method:"POST", body:form });
 
       if(!res.ok){
         showErr(`Audit failed (HTTP ${res.status})`);
@@ -410,9 +324,7 @@
     }
   });
 
-  const envEl = document.getElementById("environment");
-  const accessTokenEl = document.getElementById("accessToken");
-  const includeInactiveEl = document.getElementById("includeInactive");
+    const accessTokenEl = document.getElementById("accessToken");
 </script>
 </body>
 </html>
