@@ -340,13 +340,12 @@
         <div class="help">Fetch IDs for common objects and build a JSON snippet you can reuse in API calls.</div>
 
         <div class="btn-row">
-          <button class="mini-btn" data-item="enterprise" type="button">Get Enterprise ID</button>
           <button class="mini-btn" data-item="services" type="button">Get Service IDs</button>
           <button class="mini-btn" data-item="roomcategories" type="button">Get Room Category IDs</button>
           <button class="mini-btn" data-item="rates" type="button">Get Rate IDs</button>
-          <button class="mini-btn" data-item="rategroups" type="button">Get Rate Group IDs</button>
           <button class="mini-btn" data-item="products" type="button">Get Product IDs</button>
           <button class="mini-btn" data-item="accountingcategories" type="button">Get Accounting Category IDs</button>
+          <button class="mini-btn" data-item="agecategories" type="button">Get Age Category IDs</button>
         </div>
 
         <div class="error" id="idError" style="display:none"></div>
@@ -474,18 +473,13 @@
 
   function itemToJsonKey(item) {
     const map = {
-      enterprise: "EnterpriseId",
       services: "ServiceId",
-      roomcategories: "RoomCategoryId",
+      // "Room categories" in Mews API are Resource Categories
+      roomcategories: "ResourceCategoryId",
       rates: "RateId",
-      rategroups: "RateGroupId",
       products: "ProductId",
       accountingcategories: "AccountingCategoryId",
-      resourcecategories: "ResourceCategoryId",
-      resources: "ResourceId",
-      spaces: "SpaceId",
-      serviceids: "ServiceId",
-      rateids: "RateId",
+      agecategories: "AgeCategoryId",
     };
     return map[item] || "Id";
   }
